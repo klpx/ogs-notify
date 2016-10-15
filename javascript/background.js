@@ -4,7 +4,7 @@ var ogsPlayerInfoURL = 'https://online-go.com/api/v1/me/settings?format=json';
 var ogsSiteURL = 'https://online-go.com/';
 
 const COLOR_RED = '#FF0000';
-const COLOR_GREEN = '#00FF00';
+const COLOR_GREEN = '#0a3e0a';
 const COLOR_GREY = '#AAAAAA';
 
 const CHECK_INTERVAL_MS = 5000;
@@ -17,20 +17,21 @@ const ERROR_STATUS = '!';
  */
 function getJSON(url) {
   'use strict';
-  var xhr = new XMLHttpRequest();
-  var d = Promise.defer();
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        d.resolve(JSON.parse(xhr.responseText));
+  return new Promise(function (resolve, reject) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onload = function () {
+      if (this.status === 200) {
+        resolve(JSON.parse(this.responseText));
       } else {
-        d.reject(xhr.responseText);
+        reject(this.responseText);
       }
+    };
+    xhr.onerror = function () {
+      reject(new Error("XHR Error", this));
     }
-  };
-  xhr.open('GET', url);
-  xhr.send();
-  return d.promise;
+    xhr.send();
+  });
 }
 
 var USER_PLAYER_ID = null;
