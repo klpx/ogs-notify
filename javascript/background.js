@@ -4,7 +4,7 @@ var ogsPlayerInfoURL = 'https://online-go.com/api/v1/me/settings?format=json';
 var ogsSiteURL = 'https://online-go.com/';
 
 const COLOR_RED = '#FF0000';
-const COLOR_GREEN = '#0a3e0a';
+const COLOR_GREEN = '#1f771f';
 const COLOR_GREY = '#AAAAAA';
 
 const CHECK_INTERVAL_MS = 5000;
@@ -74,6 +74,7 @@ function init() {
   getJSON(ogsPlayerInfoURL)
     .then(
       (playerInfo) => {
+        updateNotificationArea(playerInfo.profile.id);
         setInterval(updateNotificationArea.bind(null, playerInfo.profile.id), CHECK_INTERVAL_MS);
       },
       () => {
